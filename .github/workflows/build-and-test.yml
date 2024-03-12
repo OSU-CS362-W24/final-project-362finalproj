@@ -1,6 +1,7 @@
 name: Build and test
 on:
   [workflow_call]
+  # uncomment for inputs
   # workflow_call:
   #   inputs:
   #     upload-pages-artifact:

@@ -5,6 +5,7 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack serve --open"
+    "test": "jest"
   },
   "devDependencies": {
     "css-loader": "^6.7.4",

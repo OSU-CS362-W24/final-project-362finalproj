@@ -111,4 +111,3 @@ describe('Correctly generates bar chart', () => {
 
   })
 })
-

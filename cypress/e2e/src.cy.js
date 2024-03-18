@@ -124,6 +124,8 @@ describe('Correctly transfers information between pages', () => {
     cy.findByRole("textbox", { name: /X label/i }).type("Cats")
     cy.findByRole("textbox", { name: /Y label/i }).type("Dogs")
 
+    cy.get('#chart-color-input').invoke('val', '#000000').trigger('change')
+
     cy.get(':nth-child(4) > .x-value-input').type("1")
     cy.get(':nth-child(5) > .y-value-input').type("3")
     cy.findByRole("button", { name: "+"}).click()
@@ -151,6 +153,8 @@ describe('Correctly transfers information between pages', () => {
     cy.findByRole("textbox", { name: /X label/i }).should("have.value", "Cats")
     cy.findByRole("textbox", { name: /Y label/i }).should("have.value", "Dogs")
 
+    cy.get('#chart-color-input').should("have.value", '#000000')
+
     cy.get(':nth-child(4) > .x-value-input').should("have.value", "1")
     cy.get(':nth-child(5) > .y-value-input').should("have.value", "3")
 
@@ -173,6 +177,8 @@ describe('Correctly transfers information between pages', () => {
 
     cy.findByRole("textbox", { name: /X label/i }).should("have.value", "Cats")
     cy.findByRole("textbox", { name: /Y label/i }).should("have.value", "Dogs")
+
+    cy.get('#chart-color-input').should("have.value", '#000000')
 
     cy.get(':nth-child(4) > .x-value-input').should("have.value", "1")
     cy.get(':nth-child(5) > .y-value-input').should("have.value", "3")
@@ -344,6 +350,8 @@ describe('Correctly brings up line graph from saved gallery', () => {
     cy.findByRole("textbox", { name: /X label/i }).type("Cats")
     cy.findByRole("textbox", { name: /Y label/i }).type("Dogs")
 
+    cy.get('#chart-color-input').invoke('val', '#000000').trigger('change')
+
     cy.get(':nth-child(4) > .x-value-input').type("1")
     cy.get(':nth-child(5) > .y-value-input').type("3")
     cy.findByRole("button", { name: "+"}).click()
@@ -385,6 +393,8 @@ describe('Correctly brings up line graph from saved gallery', () => {
     cy.findByRole("textbox", { name: /X label/i }).should("have.value", "Cats")
     cy.findByRole("textbox", { name: /Y label/i }).should("have.value", "Dogs")
 
+    cy.get('#chart-color-input').should('have.value', '#000000')
+
     cy.get(':nth-child(4) > .x-value-input').should("have.value", "1")
     cy.get(':nth-child(5) > .y-value-input').should("have.value", "3")
 
@@ -413,6 +423,8 @@ describe('Correctly brings up bar graph from saved gallery', () => {
 
     cy.findByRole("textbox", { name: /X label/i }).type("Cats")
     cy.findByRole("textbox", { name: /Y label/i }).type("Dogs")
+
+    cy.get('#chart-color-input').invoke('val', '#000000').trigger('change')
 
     cy.get(':nth-child(4) > .x-value-input').type("1")
     cy.get(':nth-child(5) > .y-value-input').type("3")
@@ -454,6 +466,8 @@ describe('Correctly brings up bar graph from saved gallery', () => {
     cy.findByRole("textbox", { name: /X label/i }).should("have.value", "Cats")
     cy.findByRole("textbox", { name: /Y label/i }).should("have.value", "Dogs")
 
+    cy.get('#chart-color-input').should('have.value', '#000000')
+
     cy.get(':nth-child(4) > .x-value-input').should("have.value", "1")
     cy.get(':nth-child(5) > .y-value-input').should("have.value", "3")
 
@@ -482,6 +496,8 @@ describe('Correctly brings up scatter plot from saved gallery', () => {
 
     cy.findByRole("textbox", { name: /X label/i }).type("Cats")
     cy.findByRole("textbox", { name: /Y label/i }).type("Dogs")
+
+    cy.get('#chart-color-input').invoke('val', '#000000').trigger('change')
 
     cy.get(':nth-child(4) > .x-value-input').type("1")
     cy.get(':nth-child(5) > .y-value-input').type("3")
@@ -522,6 +538,8 @@ describe('Correctly brings up scatter plot from saved gallery', () => {
 
     cy.findByRole("textbox", { name: /X label/i }).should("have.value", "Cats")
     cy.findByRole("textbox", { name: /Y label/i }).should("have.value", "Dogs")
+
+    cy.get('#chart-color-input').should('have.value', '#000000')
 
     cy.get(':nth-child(4) > .x-value-input').should("have.value", "1")
     cy.get(':nth-child(5) > .y-value-input').should("have.value", "3")

@@ -5,6 +5,7 @@ const fs = require("fs")
 const domTesting = require('@testing-library/dom')
 require('@testing-library/jest-dom')
 const userEvent = require("@testing-library/user-event").default
+const ChartBuilder = require("../chartBuilder/chartBuilder")
 
 function initDomFromFiles(htmlPath, jsPath) {
     const html = fs.readFileSync(htmlPath, 'utf8')
@@ -56,4 +57,39 @@ test("Check that each time the user clicks the add values button it adds a new p
     expect(yValueInputs[4]).not.toBeNull()
     expect(xValueInputs[5]).not.toBeNull()
     expect(yValueInputs[5]).not.toBeNull()
+})
+
+test("Check that the correct alert is displayed when user tries to generate chart without labels or data", async function(){
+    initDomFromFiles(`${__dirname}/line.html`, `${__dirname}/line.js`)
+    
+    const genChart = document.getElementById("generate-chart-btn")
+    const xLabel = domTesting.getByText(document, "X label")
+    const yLabel = domTesting.getByText(document, "Y label")
+    const clrChart = document.getElementById("clear-chart-btn")
+    const xValueInputs = document.getElementsByClassName("x-value-input")
+    const yValueInputs = document.getElementsByClassName("y-value-input")
+    const addValues = document.getElementById("add-values-btn")
+    const spy = jest.spyOn(window, 'alert')
+    
+    const user = userEvent.setup()
+    await user.click(addValues)
+    await user.click(addValues)
+    await user.type(xValueInputs[3], "7")
+    await user.type(yValueInputs[3], "8")
+    await user.type(xValueInputs[4], "9")
+    await user.type(yValueInputs[4], "10")
+    await user.click(genChart)
+
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith("Error: Must specify a label for both X and Y!")
+
+    await user.click(clrChart)
+    await user.type(xLabel, "Cats")
+    await user.type(yLabel, "Dogs")
+    await user.click(genChart)
+
+    expect(spy).toHaveBeenCalledTimes(2)
+    expect(spy).toHaveBeenCalledWith("Error: No data specified!")
+    
+    spy.mockRestore()
 })

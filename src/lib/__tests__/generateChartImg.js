@@ -76,7 +76,6 @@ test("generateChartImg returns a url when title and color are not provided", asy
 
     // Act
     const url = await generateChartImg('scatter', [{x: 50, y:50}, {x: 100, y: 100}, {x: 150, y: 150}], "label 1", "label 2");
-    console.log(url);
 
     // Assert
     expect(url).not.toBe(null);

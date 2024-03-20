@@ -1,12 +1,11 @@
 name: Build and test
 on:
   [workflow_call]
-  # uncomment for inputs
-  # workflow_call:
-  #   inputs:
-  #     upload-pages-artifact:
-  #       type: boolean
-  #       required: false
+  workflow_call:
+    inputs:
+      upload-pages-artifact:
+        type: boolean
+        required: false
 jobs:
   build-and-test:
     runs-on: ubuntu-latest

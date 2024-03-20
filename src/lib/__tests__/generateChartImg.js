@@ -16,6 +16,7 @@ function initDomFromFiles(htmlPath, jsPath){
     jest.isolateModules(() => require(jsPath));
 }
 
+// Regex to match the format of the returned url (8 characters, followed by 3 groups of 4 characters, followed by 12 characters)
 const format = new RegExp(/^blob:nodedata:[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/);
 
 test("generateChartImg returns a url given valid inputs for 'bar' type", async () => {
@@ -75,6 +76,7 @@ test("generateChartImg returns a url when title and color are not provided", asy
 
     // Act
     const url = await generateChartImg('scatter', [{x: 50, y:50}, {x: 100, y: 100}, {x: 150, y: 150}], "label 1", "label 2");
+    console.log(url);
 
     // Assert
     expect(url).not.toBe(null);

@@ -95,3 +95,48 @@ test("Check that the correct alert is displayed when user tries to generate char
 
   spy.mockRestore();
 });
+
+test("Check that clicking the clear chart button clears all entered data", async function(){
+    initDomFromFiles(`${__dirname}/line.html`, `${__dirname}/line.js`)
+    
+    const xValueInputs = document.getElementsByClassName("x-value-input");
+    const yValueInputs = document.getElementsByClassName("y-value-input");
+    const addValues = document.getElementById("add-values-btn");
+    const colorIn = document.getElementById("chart-color-input");
+    const title = document.getElementById("chart-title-input");
+    const clrChart = document.getElementById("clear-chart-btn");
+    const xLabel = document.getElementById("x-label-input");
+    const yLabel = document.getElementById("y-label-input");
+
+    const user = userEvent.setup();
+    await user.click(addValues);
+    await user.click(addValues);
+    await user.click(addValues);
+    await user.click(addValues);
+    await user.type(xValueInputs[0], "1");
+    await user.type(yValueInputs[0], "2");
+    await user.type(xValueInputs[1], "3");
+    await user.type(yValueInputs[1], "4");
+    await user.type(xValueInputs[2], "5");
+    await user.type(yValueInputs[2], "6");
+    await user.type(xValueInputs[3], "7");
+    await user.type(yValueInputs[3], "8");
+    await user.type(xValueInputs[4], "9");
+    await user.type(yValueInputs[4], "10");
+    await user.type(title, "Cats vs. Dogs");
+
+    expect(title.value).toBe("Cats vs. Dogs");
+
+    colorIn.value = "#00bbf0";
+    
+    expect(colorIn.value).toBe("#00bbf0");
+
+    await user.click(clrChart);
+
+    expect(xValueInputs[0].value).toBe("");
+    expect(yValueInputs[0].value).toBe("");
+    expect(colorIn.value).toBe("#ff4500");
+    expect(title.value).toBe("");
+    expect(xLabel.value).toBe("");
+    expect(yLabel.value).toBe("");
+})

@@ -5,17 +5,19 @@ const fs = require("fs");
 const domTesting = require("@testing-library/dom");
 require("@testing-library/jest-dom");
 const userEvent = require("@testing-library/user-event").default;
-const ChartBuilder = require("../chartBuilder/chartBuilder");
 
 function initDomFromFiles(htmlPath, jsPath) {
   const html = fs.readFileSync(htmlPath, "utf8");
   document.open();
   document.write(html);
   document.close();
-  jest.isolateModules(function () {
-    require(jsPath);
-  });
+  require(jsPath);
 }
+
+beforeEach(function() {
+    jest.resetModules()
+    jest.restoreAllMocks()
+})
 
 test("Check that each time the user clicks the add values button it adds a new pair of x y input fields and not change already entered data", async function () {
   initDomFromFiles(`${__dirname}/line.html`, `${__dirname}/line.js`);
@@ -139,4 +141,59 @@ test("Check that clicking the clear chart button clears all entered data", async
     expect(title.value).toBe("");
     expect(xLabel.value).toBe("");
     expect(yLabel.value).toBe("");
+})
+
+
+test("Check that the generateChartImg function is called and recieves all input information upon clicking the generate chart button", async function() {
+    initDomFromFiles(`${__dirname}/line.html`, `${__dirname}/line.js`)
+
+    jest.mock("../lib/generateChartImg.js")
+    const generateChartImgStub = require("../lib/generateChartImg")
+    generateChartImgStub.mockImplementation(function() {
+        return "http://placekitten.com/480/480"
+    })
+
+    const xValueInputs = document.getElementsByClassName("x-value-input");
+    const yValueInputs = document.getElementsByClassName("y-value-input");
+    const addValues = document.getElementById("add-values-btn");
+    const colorIn = document.getElementById("chart-color-input");
+    const title = document.getElementById("chart-title-input");
+    const xLabel = document.getElementById("x-label-input");
+    const yLabel = document.getElementById("y-label-input");
+    const genChart = document.getElementById("generate-chart-btn");
+
+    const user = userEvent.setup();
+    await user.click(addValues);
+    await user.click(addValues);
+    await user.click(addValues);
+    await user.click(addValues);
+    await user.type(xValueInputs[0], "1");
+    await user.type(yValueInputs[0], "3");
+    await user.type(xValueInputs[1], "2");
+    await user.type(yValueInputs[1], "7");
+    await user.type(xValueInputs[2], "3");
+    await user.type(yValueInputs[2], "15");
+    await user.type(xValueInputs[3], "4");
+    await user.type(yValueInputs[3], "25");
+    await user.type(xValueInputs[4], "5");
+    await user.type(yValueInputs[4], "40");
+    await user.type(title, "Cats vs. Dogs");
+    await user.type(xLabel, "Cats");
+    await user.type(yLabel, "Dogs");
+    colorIn.value = "#00bbf0";
+    await user.click(genChart);
+
+    expect(generateChartImgStub).toHaveBeenCalledTimes(1);
+    expect(generateChartImgStub).toHaveBeenCalledWith(
+            "line", 
+            [{"x": "1", "y": "3"}, 
+            {"x": "2", "y": "7"}, 
+            {"x": "3", "y": "15"}, 
+            {"x": "4", "y": "25"}, 
+            {"x": "5", "y": "40"}], 
+            "Cats", "Dogs", 
+            "Cats vs. Dogs", 
+            "#00bbf0")
+
+    generateChartImgStub.mockRestore()
 })

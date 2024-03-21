@@ -16,7 +16,14 @@ jobs:
       - run: npm ci
       - run: npm run build
       # UNCOMMENT TO RUN TEST SUITE & UPLOAD ARTIFACTS
-      # - run: npm run test:integration
+      - run: npm test
+      - name: Cypress run
+        uses: cypress-io/github-action@v3
+        with:
+          project: ./src
+          browser: chrome
+          start: npm start
+          wait-on: "http://localhost:8080/"
       # - run: npm run test:e2e
       # - uses: actions/upload-artifact@v3
       #   with:
